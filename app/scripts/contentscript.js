@@ -25,7 +25,11 @@ MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 // When new content gets loaded (like in Facebook), do another search
 var observer = new MutationObserver(function(mutations) {
   if (quotesLoaded) {
-    searchElement(mutations);
+    jQuery.each(mutations, function(i, mutation) {
+      jQuery.each(mutation.addedNodes, function(i, node) {
+        searchElement(node);
+      });
+    });
   }
 });
 
@@ -62,17 +66,37 @@ function makeItGreat(element) {
   element.html(getRandomQuote());
 }
 
+function escapeSpecialChars(unsafe) {
+  return unsafe
+    .replace(/]/g, '\\]')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 /**
  * Searches a page for keywords
  */
 function searchElement(element) {
-  jQuery(element).ready(function() {
-    jQuery.each(keywords, function(keyword) {
-      jQuery('*:contains("' + keyword + '")').each(function() {
-        if (jQuery(this).children().length < 1) makeItGreat(jQuery(this));
+  // if Node has no id, don't search it. Assume it has no text either.
+  if (element.id === '' || typeof element.id === 'undefined') return;
+
+  try {
+    jQuery(document).ready(function() {
+      jQuery.each(keywords, function(i, keyword) {
+        jQuery(
+          '#' +
+            escapeSpecialChars(element.id) +
+            ' *:contains("' +
+            keyword +
+            '")'
+        ).each(function() {
+          if (jQuery(this).children().length < 1) makeItGreat(jQuery(this));
+        });
       });
     });
-  });
+  } catch (err) {
+  }
 }
 
 init();
