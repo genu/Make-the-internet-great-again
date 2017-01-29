@@ -1,5 +1,5 @@
 # Make the internet great again
-**Download here**: https://chrome.google.com/webstore/detail/make-the-internet-great-a/jjonbpmajbnkopnmmddoknpcacdhknem
+**Download here**: [Chrome Extension Directory](https://chrome.google.com/webstore/detail/make-the-internet-great-a/jjonbpmajbnkopnmmddoknpcacdhknem)
 ## Overview
 
 Is Donald Trump taking over your social media and news sites?
