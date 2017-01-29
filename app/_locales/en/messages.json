@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Make The Internet Great Again",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "Remove or replace all trump related information on a page with something more insipring",
+    "description": "The description of the application"
+  }
+}
