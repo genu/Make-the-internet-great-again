@@ -1,26 +1,26 @@
-'use strict';
-
-var MakeTheInternetGreat = function ($) {
+var MakeTheInternetGreat = (function($) {
   var quotes, fn, _observer, _mutationObserverConfig;
 
   _mutationObserverConfig = { childList: true, subtree: true };
-  _observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
+  _observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
       if (mutation.addedNodes.length > 0) {
         fn.spurgeonize(mutation.addedNodes[0]);
       }
     });
   });
 
-  var keywords = ['donald', 'trump', "trump's"];
+  const keywords = [ 'donald', 'trump', "trump's" ];
 
   fn = {
     /**
        * @desc Gets a random quote from the loaded quotes
        * @return string A random quote with the first letter Capitalized
        */
-    _getRandomQuote: function _getRandomQuote() {
-      var quote = quotes[Math.floor(Math.random() * quotes.length)].quote.match(/"(.+)"/)[1];
+    _getRandomQuote: () => {
+      var quote = quotes[Math.floor(Math.random() * quotes.length)].quote.match(
+        /"(.+)"/
+      )[1];
 
       return fn._capitalize(quote.substr(0, quote.length, quote.length - 1));
     },
@@ -29,7 +29,7 @@ var MakeTheInternetGreat = function ($) {
      * @param input string The string to capitalize
      * @return string The capitalized string
      */
-    _capitalize: function _capitalize(input) {
+    _capitalize: input => {
       return input.charAt(0).toUpperCase() + input.slice(1);
     },
     /**
@@ -38,11 +38,15 @@ var MakeTheInternetGreat = function ($) {
      * @param input string The string to test
      * @return boolean True if input strings contains any of the keywords, false otherwise
      */
-    hasTrump: function hasTrump(input) {
-      var isTrump = false;
+    hasTrump: input => {
+      let isTrump = false;
 
-      $.each(keywords, function (index, keyword) {
-        if (input.includes(keyword.toLowerCase()) || input.includes(keyword.toUpperCase()) || input.includes(fn._capitalize(keyword.toLowerCase()))) {
+      $.each(keywords, (index, keyword) => {
+        if (
+          input.includes(keyword.toLowerCase()) ||
+            input.includes(keyword.toUpperCase()) ||
+            input.includes(fn._capitalize(keyword.toLowerCase()))
+        ) {
           isTrump = true;
         }
       });
@@ -54,7 +58,7 @@ var MakeTheInternetGreat = function ($) {
      * keywords with a quote;
      * @param element target The root element where to start traversing
      */
-    spurgeonize: function spurgeonize(element) {
+    spurgeonize: element => {
       // Watch for changes
       if (element === document) {
         _observer.observe($('body')[0], _mutationObserverConfig);
@@ -63,7 +67,7 @@ var MakeTheInternetGreat = function ($) {
         if (element.nodeType === 1) {
           element = $(element);
 
-          $.each(element.contents(), function (index, child) {
+          $.each(element.contents(), (index, child) => {
             if (fn.spurgeonize(child)) {
               child.data = fn._getRandomQuote();
             }
@@ -80,13 +84,13 @@ var MakeTheInternetGreat = function ($) {
   };
 
   return {
-    init: function init(document) {
-      $.getJSON(chrome.extension.getURL('/quotes.json'), function (data) {
+    init: document => {
+      $.getJSON(chrome.extension.getURL('/quotes.json'), function(data) {
         quotes = data.quotes;
         fn.spurgeonize(document);
       });
     }
   };
-}(jQuery);
+})(jQuery);
 
 MakeTheInternetGreat.init(document);
