@@ -18,7 +18,8 @@
     "tabs",
     "http://*/*",
     "https://*/*",
-    "webRequest"
+    "webRequest",
+    "storage"
   ],
   "content_scripts": [
     {
@@ -28,6 +29,7 @@
       ],
       "js": [
         "bower_components/jquery/dist/jquery.min.js",
+        "bower_components/lodash/dist/lodash.js",
         "scripts/contentscript.js"
       ],
       "run_at": "document_end",

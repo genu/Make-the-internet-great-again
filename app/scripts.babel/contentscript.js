@@ -1,5 +1,5 @@
 var MakeTheInternetGreat = (function($) {
-  var quotes, fn, _observer, _mutationObserverConfig;
+  var quotes, options, fn, _observer, _mutationObserverConfig;
 
   _mutationObserverConfig = { childList: true, subtree: true };
   _observer = new MutationObserver(mutations => {
@@ -10,7 +10,19 @@ var MakeTheInternetGreat = (function($) {
     });
   });
 
-  const keywords = [ 'donald', 'trump', "trump's" ];
+  // Get keywords list
+  chrome.storage.sync.get(
+    {
+      keywords: [ 'donald', 'trump', "trump's" ],
+      isEnabled: true,
+      reformer: 'spurgeon'
+    },
+    _options => {
+      options = _options;
+
+      options.keywords = _.map(options.keywords, _.trim);
+    }
+  );
 
   fn = {
     /**
@@ -41,7 +53,7 @@ var MakeTheInternetGreat = (function($) {
     hasTrump: input => {
       let isTrump = false;
 
-      $.each(keywords, (index, keyword) => {
+      $.each(options.keywords, (index, keyword) => {
         if (
           input.includes(keyword.toLowerCase()) ||
             input.includes(keyword.toUpperCase()) ||
@@ -59,6 +71,7 @@ var MakeTheInternetGreat = (function($) {
      * @param element target The root element where to start traversing
      */
     spurgeonize: element => {
+      if (!options.isEnabled) return;
       // Watch for changes
       if (element === document) {
         _observer.observe($('body')[0], _mutationObserverConfig);
