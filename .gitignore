@@ -9,3 +9,4 @@ package
 app.crx
 app.zip
 app.pem
+.DS_Store
