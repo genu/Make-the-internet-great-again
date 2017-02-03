@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       keywords: [ 'donald', 'trump', "trump's" ],
       isEnabled: true,
-      reformer: 'calvin'
+      reformer: 'spurgeon'
     },
     _options => {
       options = _options;
