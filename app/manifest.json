@@ -1,8 +1,8 @@
 {
-  "name": "__MSG_appName__",
+  "name": "Make The Internet Great Again",
   "version": "1.1.0",
   "manifest_version": 2,
-  "description": "__MSG_appDescription__",
+  "description": "Any references to Donald Trump are replaced with inspiring quotes from Charles Spurgeon",
   "icons": {
     "16": "images/icon-16.png",
     "128": "images/icon-128.png"
@@ -36,7 +36,7 @@
       "all_frames": false
     }
   ],
-  "web_accessible_resources": ["quotes.json"],
+  "web_accessible_resources": ["quotes/*.json"],
   "page_action": {
     "default_icon": {
       "19": "images/icon-19.png",

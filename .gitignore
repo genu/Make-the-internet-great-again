@@ -11,3 +11,4 @@ app.zip
 app.pem
 .DS_Store
 scripts
+npm-debug.log

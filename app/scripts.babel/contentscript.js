@@ -10,20 +10,6 @@ var MakeTheInternetGreat = (function($) {
     });
   });
 
-  // Get keywords list
-  chrome.storage.sync.get(
-    {
-      keywords: [ 'donald', 'trump', "trump's" ],
-      isEnabled: true,
-      reformer: 'spurgeon'
-    },
-    _options => {
-      options = _options;
-
-      options.keywords = _.map(options.keywords, _.trim);
-    }
-  );
-
   fn = {
     /**
        * @desc Gets a random quote from the loaded quotes
@@ -98,10 +84,28 @@ var MakeTheInternetGreat = (function($) {
 
   return {
     init: document => {
-      $.getJSON(chrome.extension.getURL('/quotes.json'), function(data) {
-        quotes = data.quotes;
-        fn.spurgeonize(document);
-      });
+      // Get keywords list
+      chrome.storage.sync.get(
+        {
+          keywords: [ 'donald', 'trump', "trump's" ],
+          isEnabled: true,
+          reformer: 'spurgeon'
+        },
+        _options => {
+          options = _options;
+
+          options.keywords = _.map(options.keywords, _.trim);
+
+          // Load quotes
+          $.getJSON(
+            chrome.extension.getURL('/quotes/' + options.reformer + '.json'),
+            function(data) {
+              quotes = data.quotes;
+              fn.spurgeonize(document);
+            }
+          );
+        }
+      );
     }
   };
 })(jQuery);
